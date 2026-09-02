@@ -1,9 +1,6 @@
 import cv2
-
 camera = cv2.VideoCapture(2)
-
-print("[INFO] Initializing camera.")
-
+print("[INFO] Initializing camera."
 cv2.namedWindow("Camera")
 
 while True: 
