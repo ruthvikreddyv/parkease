@@ -9,7 +9,6 @@ def calculate_distance(a, b):
     yb = b[1] + round((b[-1]-b[1])/2)
 
     distance = math.sqrt(math.pow((xb-xa),2)+math.pow((yb-ya),2))
-
     return distance
 
 def find_closest_parking(parking_list, entrance):
