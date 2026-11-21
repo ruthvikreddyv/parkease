@@ -1,0 +1,88 @@
+{
+  "entrance": [
+    328,
+    450
+  ],
+  "bays": [
+    {
+      "label": "A1",
+      "center": [
+        63,
+        141
+      ],
+      "occupied": false
+    },
+    {
+      "label": "A2",
+      "center": [
+        187,
+        141
+      ],
+      "occupied": false
+    },
+    {
+      "label": "A3",
+      "center": [
+        311,
+        141
+      ],
+      "occupied": false
+    },
+    {
+      "label": "A4",
+      "center": [
+        434,
+        141
+      ],
+      "occupied": false
+    },
+    {
+      "label": "A5",
+      "center": [
+        556,
+        139
+      ],
+      "occupied": false
+    },
+    {
+      "label": "B1",
+      "center": [
+        63,
+        315
+      ],
+      "occupied": false
+    },
+    {
+      "label": "B2",
+      "center": [
+        187,
+        314
+      ],
+      "occupied": false
+    },
+    {
+      "label": "B3",
+      "center": [
+        313,
+        312
+      ],
+      "occupied": true
+    },
+    {
+      "label": "B4",
+      "center": [
+        436,
+        310
+      ],
+      "occupied": true
+    },
+    {
+      "label": "B5",
+      "center": [
+        559,
+        308
+      ],
+      "occupied": false
+    }
+  ]
+}
