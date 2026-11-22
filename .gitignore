@@ -1,3 +1,7 @@
 __pycache__/
 *.pyc
 .venv/
+
+*.sqlite3
+camera-layout.json
+.env
