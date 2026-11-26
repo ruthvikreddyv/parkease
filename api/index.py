@@ -11,7 +11,7 @@ from pathlib import Path
 from urllib.parse import urlsplit
 
 from flask import Flask, abort, jsonify, request, send_from_directory
-from sqlalchemy import (JSON, Column, Float, Integer, MetaData, String, Table,
+from sqlalchemy import (JSON, Column, Float, ForeignKey, Integer, MetaData, String, Table,
                         create_engine, delete, insert, select, update)
 from sqlalchemy.exc import IntegrityError
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -23,6 +23,10 @@ app.config["MAX_CONTENT_LENGTH"] = 100_000
 schema = MetaData()
 drivers = Table("pe_driver", schema, Column("id", Integer, primary_key=True),
                 Column("name", String(40), unique=True, nullable=False), Column("password", String(256), nullable=False))
+profiles = Table("pe_driver_profile", schema,
+                 Column("driver", Integer, ForeignKey("pe_driver.id"), primary_key=True),
+                 Column("full_name", String(100), nullable=False),
+                 Column("contact", String(16), nullable=False))
 sessions = Table("pe_session", schema, Column("digest", String(64), primary_key=True),
                  Column("driver", Integer, nullable=False), Column("expires", Float, nullable=False))
 lots = Table("pe_lot", schema, Column("id", Integer, primary_key=True), Column("snapshot", JSON, nullable=False))
@@ -115,10 +119,22 @@ def account(action):
         name = name.lower()
         if action == "signup":
             if len(password)<12: abort(400, "Use at least 12 characters for your password.")
+            if data.get("confirm_password") != password:
+                abort(400, "Passwords do not match.")
+            full_name = data.get("full_name")
+            if not isinstance(full_name, str) or not 1 <= len(full_name.strip()) <= 100 or not full_name.strip().isprintable():
+                abort(400, "Enter your full name (up to 100 characters).")
+            contact = data.get("contact")
+            if not isinstance(contact, str) or len(contact) > 32:
+                abort(400, "Enter a valid contact number.")
+            contact = re.sub(r"[ ()-]", "", contact)
+            if not re.fullmatch(r"\+?[0-9]{7,15}", contact):
+                abort(400, "Enter a contact number with 7–15 digits.")
             try:
                 driver = conn.execute(insert(drivers).values(name=name,password=generate_password_hash(password))).inserted_primary_key[0]
             except IntegrityError:
                 abort(409, "Username unavailable.")
+            conn.execute(insert(profiles).values(driver=driver, full_name=full_name.strip(), contact=contact))
         else:
             row = conn.execute(select(drivers).where(drivers.c.name == name)).first()
             if not row or not check_password_hash(row.password, password): abort(401, "Invalid username or password.")
