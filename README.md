@@ -59,7 +59,7 @@ Monitoring samples approximately once per second and takes the majority of three
 
 ### Hosted installation
 
-Set PARKEASE_DATABASE_URL to a dedicated PostgreSQL connection with TLS and PARKEASE_CAMERA_TOKEN to a long random secret in the Vercel production environment. Use the same camera token on the worker. With the production database URL available in a trusted shell, initialize the four ParkEase tables once:
+Set PARKEASE_DATABASE_URL to a dedicated PostgreSQL connection with TLS and PARKEASE_CAMERA_TOKEN to a long random secret in the Vercel production environment. Use the same camera token on the worker. With the production database URL available in a trusted shell, initialize the ParkEase tables (rerun after updating an existing installation to add the driver profile table):
 
 ```sh
 python3 -c 'from api.index import initialize; initialize()'
@@ -67,4 +67,4 @@ python3 -c 'from api.index import initialize; initialize()'
 
 Redeploy after configuring the environment. Vercel serves the dashboard and Flask API; a persistent computer on the camera network runs the monitoring process. A hosted installation without a database reports offline and blocks account and booking writes.
 
-Drivers register a username and password and log in with an HTTP-only session cookie. Each driver may hold one bay for 15 minutes and may cancel it. A bay can have only one active reservation. The server checks login, occupancy, camera layout revision and telemetry freshness in the booking transaction. Observations older than 20 seconds pause bookings. Existing holds survive camera outages. Layout revisions with active holds are rejected until the holds expire or are cancelled.
+New drivers enter their full name, contact number and username, then enter and confirm their password. Existing drivers keep their username and password and log in with an HTTP-only session cookie. Each driver may hold one bay for 15 minutes and may cancel it. A bay can have only one active reservation. The server checks login, occupancy, camera layout revision and telemetry freshness in the booking transaction. Observations older than 20 seconds pause bookings. Existing holds survive camera outages. Layout revisions with active holds are rejected until the holds expire or are cancelled.
