@@ -1,4 +1,38 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Log in · ParkEase</title><link rel="icon" href="/mark.svg"><link rel="stylesheet" href="/style.css"><script defer src="/account.js"></script></head><body><header><a class="brand" href="/"><img src="/mark.svg" alt="">ParkEase</a><a href="/">Parking overview</a></header><main class="panel account"><h1>Log in</h1><p>Use your driver account to reserve a parking bay.</p>
-<form data-mode="login"><label for="username">Username</label><input id="username" name="username" autocomplete="username" minlength="3" maxlength="40" pattern="[a-zA-Z0-9_.\-]+" required>
-<label for="password">Password</label><input id="password" name="password" type="password" autocomplete="current-password" minlength="1" maxlength="128" required>
-<button type="submit">Log in</button></form><p role="status" id="notice"></p><a href="/signup/">Create an account</a></main></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Log in · ParkEase</title>
+  <link rel="icon" href="/mark.svg">
+  <link rel="stylesheet" href="/account.css">
+  <script defer src="/account.js"></script>
+</head>
+<body>
+  <header>
+    <a class="brand" href="/"><img src="/mark.svg" alt="">ParkEase</a>
+    <a class="back" href="/#live"><span aria-hidden="true">←</span> Parking overview</a>
+  </header>
+  <main>
+    <aside aria-label="Parking overview">
+      <div class="lot" aria-hidden="true"><i class="parked"></i><i class=""></i><i class="parked"></i><i class="parked"></i><i class=""></i><i class="parked"></i><i class="target"></i><i class="parked"></i><i class=""></i><i class="parked"></i></div>
+      <div class="aside-copy"><h2>Find your<br>parking bay.</h2><a href="/#live">Explore parking <span aria-hidden="true">↗</span></a></div>
+    </aside>
+    <section aria-labelledby="heading">
+      <nav aria-label="Driver account"><a href="/login/" aria-current="page">Log in</a><a href="/signup/">Sign up</a></nav>
+      <h1 id="heading">Welcome back.</h1>
+      <p>Log in to reserve a bay and manage your parking.</p>
+      <form data-mode="login">
+        <label for="username">Username</label>
+        <input id="username" name="username" autocomplete="username" autocapitalize="none" spellcheck="false" minlength="3" maxlength="40" pattern="[a-zA-Z0-9_.\-]+" required>
+        
+        <label for="password">Password</label>
+        <div class="password"><input id="password" name="password" type="password" autocomplete="current-password" minlength="1" maxlength="128" required><button type="button" id="toggle" aria-controls="password" aria-label="Show password">Show</button></div>
+        
+        <button type="submit" class="submit">Log in<span aria-hidden="true">→</span></button>
+        <div id="notice" role="status"></div>
+      </form>
+    </section>
+  </main>
+</body>
+</html>
