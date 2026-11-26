@@ -23,13 +23,26 @@ class ReservationTest(unittest.TestCase):
         self.camera = api.app.test_client()
         self.users = [api.app.test_client(), api.app.test_client()]
         for i, client in enumerate(self.users):
-            result = client.post("/api/signup", json={"username": f"driver{i}", "password":"long-test-password"})
+            result = client.post("/api/signup", json={"username": f"driver{i}", "full_name": "Test Driver",
+                                                      "contact": "+1 (202) 555-0142", "confirm_password": "long-test-password",
+                                                      "password":"long-test-password"})
             self.assertEqual(result.status_code, 200)
         self.revision = "a"*32
         self.data = {"revision":self.revision, "observed":time.time(), "aspect":1.5, "entrance":[.5,1],
                      "bays":[{"id":"A1","points":[[0,0],[.2,0],[.2,.2],[0,.2]],"occupied":False}]}
         self.payload = {"bay":"A1","revision":self.revision}
         self.assertEqual(self.publish(), 200)
+
+    def test_signup_profile(self):
+        payload = dict(username="another", password="long-test-password", confirm_password="long-test-password",
+                       full_name="  Test Driver  ", contact="+1 (202) 555-0142")
+        for key, invalid in [("full_name", " "), ("contact", "555ABC1234"), ("confirm_password", "mismatch")]:
+            self.assertEqual(self.camera.post("/api/signup", json={**payload, key: invalid}).status_code, 400)
+        self.assertEqual(self.camera.post("/api/signup", json=payload).status_code, 200)
+        with self.engine.connect() as conn:
+            profile = conn.execute(api.select(api.profiles).join(api.drivers).where(api.drivers.c.name == "another")).one()
+            self.assertEqual((profile.full_name, profile.contact), ("Test Driver", "+12025550142"))
+        self.assertNotIn("contact", self.camera.get("/api/state").json)
 
     def publish(self):
         return self.camera.post("/api/telemetry", json=self.data, headers={"Authorization":"Bearer unit-test"}).status_code
