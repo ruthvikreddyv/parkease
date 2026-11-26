@@ -4,6 +4,17 @@ const password = document.querySelector('#password');
 const toggle = document.querySelector('#toggle');
 const submit = form.querySelector('[type="submit"]');
 
+const confirmation = form.elements.confirm_password;
+function validateSignup() {
+  if (!confirmation) return;
+  const {full_name, contact} = form.elements;
+  full_name.setCustomValidity(full_name.value.trim() ? '' : 'Enter your full name.');
+  const digits = contact.value.replace(/[ ()-]/g, '');
+  contact.setCustomValidity(/^\+?[0-9]{7,15}$/.test(digits) ? '' : 'Enter a contact number with 7–15 digits.');
+  confirmation.setCustomValidity(confirmation.value === password.value ? '' : 'Passwords do not match.');
+}
+form.addEventListener('input', validateSignup);
+
 toggle.addEventListener('click', () => {
   const show = password.type === 'password';
   password.type = show ? 'text' : 'password';
@@ -14,6 +25,8 @@ toggle.addEventListener('click', () => {
 form.addEventListener('submit', async event => {
   event.preventDefault();
   if (submit.disabled) return;
+  validateSignup();
+  if (!form.reportValidity()) return;
   submit.disabled = true;
   form.setAttribute('aria-busy', 'true');
   notice.textContent = '';
