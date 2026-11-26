@@ -21,14 +21,21 @@
     <section aria-labelledby="heading">
       <nav aria-label="Driver account"><a href="/login/">Log in</a><a href="/signup/" aria-current="page">Sign up</a></nav>
       <h1 id="heading">Create your account.</h1>
-      <p>Choose a username and password to start reserving parking.</p>
+      <p>Register your driver details to reserve a parking bay.</p>
       <form data-mode="signup">
+        <label for="full_name">Full name</label>
+        <input id="full_name" name="full_name" autocomplete="name" maxlength="100" required>
+        <label for="contact">Contact number</label>
+        <input id="contact" name="contact" type="tel" autocomplete="tel" maxlength="32" aria-describedby="contact-hint" required>
+        <small id="contact-hint">7–15 digits. Include your country code for an international number.</small>
         <label for="username">Username</label>
         <input id="username" name="username" autocomplete="username" autocapitalize="none" spellcheck="false" minlength="3" maxlength="40" pattern="[a-zA-Z0-9_.\-]+" aria-describedby="user-hint" required>
         <small id="user-hint">3–40 characters. Letters, numbers, dots, dashes and underscores.</small>
         <label for="password">Password</label>
         <div class="password"><input id="password" name="password" type="password" autocomplete="new-password" minlength="12" maxlength="128" aria-describedby="pass-hint" required><button type="button" id="toggle" aria-controls="password" aria-label="Show password">Show</button></div>
         <small id="pass-hint">Use at least 12 characters.</small>
+        <label for="confirm_password">Confirm password</label>
+        <input id="confirm_password" name="confirm_password" type="password" autocomplete="new-password" maxlength="128" required>
         <button type="submit" class="submit">Create account<span aria-hidden="true">→</span></button>
         <div id="notice" role="status"></div>
       </form>
